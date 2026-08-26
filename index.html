@@ -122,7 +122,7 @@
      ========================================================= */
   .header {
     position: relative;
-    z-index: 3;
+    z-index: 6;
     width: 100%;
   }
   .app-bar {
@@ -429,6 +429,202 @@
   }
   .btn-text:disabled { cursor: not-allowed; pointer-events: none; }
 
+  /* =========================================================
+     REWARD MODAL — "Grand Prize" celebration (Figma node 1489:9029)
+     Sits above the tapped-chest scene, below the header.
+     ========================================================= */
+  .reward-modal {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .screen.show-reward .reward-modal {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .reward-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4); /* background/bg-transparent-dark-40 */
+  }
+
+  /* crown + gem cluster, peeking above the ribbon */
+  .reward-gems {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 196px;
+    height: 125px;
+  }
+  .reward-gems__inner {
+    position: absolute;
+    left: 50%;
+    top: 26px;
+    transform: translateX(-50%);
+    width: 86.73%;   /* 297.48 / 343 */
+    height: 94.16px;
+  }
+  .gem { position: absolute; }
+  .gem img { width: 100%; height: 100%; display: block; }
+
+  /* ribbon banner */
+  .reward-ribbon {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 299px;
+    height: 88px;
+    overflow: hidden;
+  }
+  .reward-ribbon__shape {
+    position: absolute;
+    left: 50%;
+    top: 19.25%;
+    bottom: 17.35%;
+    transform: translateX(-50%);
+    width: 85.4%; /* 293/343 */
+    background: linear-gradient(180deg, var(--accent-primary) 0%, #f46400 100.65%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .reward-ribbon__text {
+    margin: 0;
+    padding: 0 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 28px;
+    color: var(--text-primary-inverse);
+  }
+
+  /* voucher card */
+  .reward-card {
+    position: absolute;
+    left: 50%;
+    top: 371.5px;
+    transform: translateX(-50%);
+    width: 270px;
+    max-width: 72%;
+    padding: 0 16px 16px;
+    border-radius: 0 0 12px 12px;
+    background:
+      linear-gradient(180deg, #fdecA9 0%, #fde47f 15%, rgba(255,255,255,0) 100%),
+      linear-gradient(90deg, #ffffff 0%, #ffffff 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .reward-asset {
+    position: relative;
+    width: 100%;
+    height: 112px;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+  }
+  .reward-asset__title {
+    position: absolute;
+    left: 50%;
+    top: 32px;
+    transform: translateX(-50%);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+    white-space: nowrap;
+    color: var(--text-primary);
+  }
+  .reward-asset__title span:first-child { font-weight: 600; font-size: 22px; line-height: 24px; }
+  .reward-asset__title span:last-child  { font-weight: 600; font-size: 26px; line-height: 28px; }
+
+  .reward-copy {
+    background: #ffffff;
+    border-radius: var(--radius-button);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .reward-copy__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    text-align: left;
+    min-width: 0;
+  }
+  .reward-copy__label {
+    font-weight: 400;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    color: #666666;
+  }
+  .reward-copy__code {
+    font-weight: 600;
+    font-size: var(--font-size-subhead-2);
+    line-height: var(--line-height-subhead-2);
+    color: #a605ad;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .reward-copy__icon { width: 24px; height: 24px; flex: none; color: var(--text-primary); }
+  .reward-copy__icon svg { width: 100%; height: 100%; }
+
+  .reward-caption {
+    margin: 0;
+    text-align: center;
+    font-weight: 400;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    color: #666666;
+  }
+
+  .reward-cta {
+    appearance: none;
+    border: none;
+    width: 100%;
+    background: var(--accent-primary);
+    border-radius: var(--radius-button);
+    padding: 9px 24px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--font-size-title);
+    line-height: var(--line-height-title);
+    color: var(--text-primary);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: filter 0.12s ease;
+  }
+  .reward-cta:active,
+  .reward-cta.is-pressed { filter: brightness(0.94); }
+
+  /* opened-chest peeking behind the celebration content */
+  .reward-chest {
+    position: absolute;
+    left: 50%;
+    top: 252px;
+    transform: translateX(-50%);
+    width: 145px;
+    height: 179px;
+    z-index: -1;
+  }
+  .reward-chest img { width: 100%; height: 100%; display: block; }
+
   /* Respect reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -549,12 +745,70 @@
     <button class="btn-text"><span class="btn-text__label">Terms &amp; Conditions</span></button>
   </div>
 
+  <!-- reward modal: "Grand Prize" celebration (Figma node 1489:9029) -->
+  <div class="reward-modal" id="rewardModal" aria-hidden="true">
+    <div class="reward-overlay"></div>
+
+    <div class="reward-chest">
+      <img src="https://www.figma.com/api/mcp/asset/11405a71-5b5b-40d6-bbdc-7a4026870409.svg" alt="" />
+    </div>
+
+    <div class="reward-gems" aria-hidden="true">
+      <div class="reward-gems__inner">
+        <span class="gem" style="top:63.33%; right:0; bottom:9.29%; left:92.99%;"><img src="https://www.figma.com/api/mcp/asset/0ca4987b-f23a-4bf5-9d8c-4d76acf8098c.svg" alt="" /></span>
+        <span class="gem" style="top:52.54%; right:4.72%; bottom:28.23%; left:85.99%;"><img src="https://www.figma.com/api/mcp/asset/d1a07273-8a01-4d91-a2f0-51442b9e679c.svg" alt="" /></span>
+        <span class="gem" style="top:71.77%; right:0; bottom:8.64%; left:87.69%;"><img src="https://www.figma.com/api/mcp/asset/b461bdea-6c58-470b-99f9-36fcf332e3fc.svg" alt="" /></span>
+        <span class="gem" style="top:52.82%; right:7.01%; bottom:8.64%; left:85.97%;"><img src="https://www.figma.com/api/mcp/asset/693dd26c-025f-4a8d-89cf-098c6a93478d.svg" alt="" /></span>
+        <span class="gem" style="top:52.24%; right:86.24%; bottom:27.58%; left:4.44%;"><img src="https://www.figma.com/api/mcp/asset/837a6db6-f47e-4e0f-bbf6-645adc3d082d.svg" alt="" /></span>
+        <span class="gem" style="top:64.14%; right:93.12%; bottom:7.39%; left:0;"><img src="https://www.figma.com/api/mcp/asset/489809ad-dfb9-4e92-bff7-7040e8e901f6.svg" alt="" /></span>
+        <span class="gem" style="top:52.24%; right:86.22%; bottom:8.35%; left:6.88%;"><img src="https://www.figma.com/api/mcp/asset/5ff25523-90f5-44b4-b80b-e2926dc41145.svg" alt="" /></span>
+        <span class="gem" style="top:72.42%; right:87.47%; bottom:7.33%; left:0;"><img src="https://www.figma.com/api/mcp/asset/13bce9e1-2b57-4fc6-930e-65108e05b22c.svg" alt="" /></span>
+        <span class="gem" style="top:56.3%; right:17.57%; bottom:4.06%; left:66.56%;"><img src="https://www.figma.com/api/mcp/asset/404e02a0-b83c-4995-a7ab-4af643b09a93.svg" alt="" /></span>
+        <span class="gem" style="top:58.39%; right:18.41%; bottom:6.15%; left:67.4%;"><img src="https://www.figma.com/api/mcp/asset/769d97b9-0722-4ef9-a43e-d2b65b18cf5c.svg" alt="" /></span>
+        <span class="gem" style="top:58.18%; right:67.84%; bottom:3.82%; left:16.02%;"><img src="https://www.figma.com/api/mcp/asset/bb6adafb-6d57-4dfc-be22-287a9e59077a.svg" alt="" /></span>
+        <span class="gem" style="top:60.18%; right:68.69%; bottom:5.83%; left:16.88%;"><img src="https://www.figma.com/api/mcp/asset/f955ffed-d96f-4444-9981-6c0b55efba07.svg" alt="" /></span>
+        <span class="gem" style="top:18.1%; right:14.65%; bottom:48.29%; left:74.71%;"><img src="https://www.figma.com/api/mcp/asset/44493752-4a00-4f41-ab15-5c76aef7b10c.svg" alt="" /></span>
+        <span class="gem" style="top:14.84%; right:74%; bottom:47.19%; left:13.99%;"><img src="https://www.figma.com/api/mcp/asset/bc3f4f01-053c-4214-9f7c-cc00ee13a488.svg" alt="" /></span>
+        <span class="gem" style="top:0; right:30.54%; bottom:0; left:28.47%;"><img src="https://www.figma.com/api/mcp/asset/41aa3594-ef29-46e7-87d0-b4322ed14902.svg" alt="" /></span>
+      </div>
+    </div>
+
+    <div class="reward-ribbon" aria-hidden="true">
+      <div class="reward-ribbon__shape">
+        <p class="reward-ribbon__text">You won a Grand Prize!</p>
+      </div>
+    </div>
+
+    <div class="reward-card" role="dialog" aria-label="Grand prize reward">
+      <div class="reward-asset">
+        <p class="reward-asset__title">
+          <span>Traveloka Voucher</span>
+          <span>Rp10.000.000</span>
+        </p>
+      </div>
+
+      <button class="reward-copy" id="copyVoucherBtn" aria-label="Copy voucher code">
+        <span class="reward-copy__text">
+          <span class="reward-copy__label" id="copyVoucherLabel">Voucher Code</span>
+          <span class="reward-copy__code">JAGO-1234-ABCD</span>
+        </span>
+        <span class="reward-copy__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="8" y="8" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M16 8V6a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2h2" stroke="currentColor" stroke-width="1.8"/></svg>
+        </span>
+      </button>
+
+      <p class="reward-caption">Open the Traveloka app to apply this voucher code.</p>
+
+      <button class="reward-cta" id="rewardCta">Go to My Rewards</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
   // Pressed-state handling for interactive elements.
   (function () {
-    var PRESSABLE = '.btn-main, .btn-pill-outline, .btn-text, .icon-btn';
+    var PRESSABLE = '.btn-main, .btn-pill-outline, .btn-text, .icon-btn, .reward-cta, .reward-copy';
 
     function setPressed(el, isPressed) {
       if (!el || el.disabled) return;
@@ -573,11 +827,14 @@
   // dialogue box fades out, chest crossfades from the idle (with hand)
   // artwork to the tapped (hand removed) artwork, and the CTA button
   // label swaps from "Check Rewards Info" to "See Remaining Rewards".
+  // After a short beat (letting the pop/burst animation play), the
+  // "Grand Prize" reward modal reveals (node 1489:9029).
   (function () {
+    var screen = document.querySelector('.screen');
     var stage = document.querySelector('.stage');
     var chestBtn = document.getElementById('chestTapTarget');
     var mainCta = document.getElementById('mainCta');
-    if (!stage || !chestBtn) return;
+    if (!screen || !stage || !chestBtn) return;
 
     chestBtn.addEventListener('click', function () {
       if (stage.classList.contains('is-opened')) return;
@@ -585,7 +842,43 @@
       chestBtn.disabled = true;
       chestBtn.setAttribute('aria-label', 'Treasure chest opened');
       if (mainCta) mainCta.textContent = 'See Remaining Rewards';
+
+      window.setTimeout(function () {
+        screen.classList.add('show-reward');
+        var rewardModal = document.getElementById('rewardModal');
+        if (rewardModal) rewardModal.setAttribute('aria-hidden', 'false');
+      }, 700);
     });
+  })();
+
+  // Reward modal: copy voucher code, dismiss via CTA.
+  (function () {
+    var screen = document.querySelector('.screen');
+    var copyBtn = document.getElementById('copyVoucherBtn');
+    var copyLabel = document.getElementById('copyVoucherLabel');
+    var rewardCta = document.getElementById('rewardCta');
+    var rewardModal = document.getElementById('rewardModal');
+    var VOUCHER_CODE = 'JAGO-1234-ABCD';
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(VOUCHER_CODE).catch(function () {});
+        }
+        if (copyLabel) {
+          var original = copyLabel.textContent;
+          copyLabel.textContent = 'Copied!';
+          window.setTimeout(function () { copyLabel.textContent = original; }, 1500);
+        }
+      });
+    }
+
+    if (rewardCta && screen && rewardModal) {
+      rewardCta.addEventListener('click', function () {
+        screen.classList.remove('show-reward');
+        rewardModal.setAttribute('aria-hidden', 'true');
+      });
+    }
   })();
 </script>
 
