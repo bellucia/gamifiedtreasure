@@ -260,12 +260,16 @@
   }
   .chest-wrap:disabled { cursor: default; }
   .chest-wrap img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     display: block;
     object-fit: contain;
     pointer-events: none;
+    transition: opacity 0.3s ease;
   }
+  .chest-wrap img.chest--tapped { opacity: 0; }
 
   .chest-burst {
     position: absolute;
@@ -309,6 +313,8 @@
   .stage.is-opened .chest-wrap {
     animation: chestPopOpen 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
+  .stage.is-opened .chest-wrap img.chest--idle   { opacity: 0; }
+  .stage.is-opened .chest-wrap img.chest--tapped { opacity: 1; }
   .stage.is-opened .chest-burst {
     animation: chestBurst 0.7s ease-out forwards;
   }
@@ -524,7 +530,8 @@
 
     <button class="chest-wrap" id="chestTapTarget" aria-label="Tap the treasure chest to open it">
       <span class="chest-burst" aria-hidden="true"></span>
-      <img src="https://www.figma.com/api/mcp/asset/af56f357-032c-491b-afff-9f6bb6bf25b5.png" alt="" />
+      <img class="chest chest--idle" src="https://www.figma.com/api/mcp/asset/af56f357-032c-491b-afff-9f6bb6bf25b5.png" alt="" />
+      <img class="chest chest--tapped" src="https://www.figma.com/api/mcp/asset/01fbd7ef-01f6-45eb-896c-76e1605de95d.png" alt="" />
     </button>
 
     <div class="ticket-tooltip">
@@ -537,7 +544,7 @@
   <div class="info-panel">
     <p class="infobox">1 ticket = 1 chance. Use your ticket(s) before they expire on the 1st of next month!</p>
 
-    <button class="btn-main">Check Rewards Info</button>
+    <button class="btn-main" id="mainCta">Check Rewards Info</button>
 
     <button class="btn-text"><span class="btn-text__label">Terms &amp; Conditions</span></button>
   </div>
@@ -562,13 +569,14 @@
     });
   })();
 
-  // Chest tap interaction: dialogue box fades out, chest gets a pop +
-  // burst cue. (This design's chest/hand are baked into one flattened
-  // asset, so there's no separate "opened" artwork to crossfade to yet —
-  // let me know if you want a matching opened-state asset pulled too.)
+  // Chest tap interaction (matches Figma node 1355:10216 "Tap 1x"):
+  // dialogue box fades out, chest crossfades from the idle (with hand)
+  // artwork to the tapped (hand removed) artwork, and the CTA button
+  // label swaps from "Check Rewards Info" to "See Remaining Rewards".
   (function () {
     var stage = document.querySelector('.stage');
     var chestBtn = document.getElementById('chestTapTarget');
+    var mainCta = document.getElementById('mainCta');
     if (!stage || !chestBtn) return;
 
     chestBtn.addEventListener('click', function () {
@@ -576,6 +584,7 @@
       stage.classList.add('is-opened');
       chestBtn.disabled = true;
       chestBtn.setAttribute('aria-label', 'Treasure chest opened');
+      if (mainCta) mainCta.textContent = 'See Remaining Rewards';
     });
   })();
 </script>
