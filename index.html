@@ -440,49 +440,27 @@
     background: rgba(0,0,0,0.4); /* background/bg-transparent-dark-40 */
   }
 
-  /* crown + gem cluster, peeking above the ribbon */
-  .reward-gems {
+  /* crown + gem cluster: single flattened image (node 1901:16271), edge-to-edge */
+  .reward-crown {
     position: absolute;
-    left: 16px;
-    right: 16px;
-    top: 196px;
-    height: 125px;
-  }
-  .reward-gems__inner {
-    position: absolute;
-    left: 50%;
-    top: 26px;
-    transform: translateX(-50%);
-    width: 86.73%;   /* 297.48 / 343 */
-    height: 94.16px;
-  }
-  .gem { position: absolute; }
-  .gem img { width: 100%; height: 100%; display: block; }
-
-  /* ribbon banner */
-  .reward-ribbon {
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    top: 299px;
-    height: 88px;
+    left: 0;
+    top: 48px;
+    width: 100%;
+    height: 320px;
     overflow: hidden;
+    pointer-events: none;
   }
-  .reward-ribbon__shape {
+  .reward-crown img { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+  /* plain celebration title, no ribbon banner in this version */
+  .reward-title {
     position: absolute;
     left: 50%;
-    top: 19.25%;
-    bottom: 17.35%;
+    top: 310px; /* = 38.18% of 812px reference height */
     transform: translateX(-50%);
-    width: 85.4%; /* 293/343 */
-    background: linear-gradient(180deg, var(--accent-primary) 0%, #f46400 100.65%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .reward-ribbon__text {
     margin: 0;
-    padding: 0 12px;
+    width: 277px;
+    max-width: 74%;
     text-align: center;
     font-weight: 600;
     font-size: 26px;
@@ -494,7 +472,7 @@
   .reward-card {
     position: absolute;
     left: 50%;
-    top: 371.5px;
+    top: 350.5px;
     transform: translateX(-50%);
     width: 270px;
     max-width: 72%;
@@ -516,6 +494,17 @@
     border-radius: 12px 12px 0 0;
     overflow: hidden;
   }
+  /* decorative sparkle bursts flanking the voucher title */
+  .reward-asset__sparkle {
+    position: absolute;
+    top: -46px;
+    width: 182.164px;
+    height: 184.655px;
+    pointer-events: none;
+  }
+  .reward-asset__sparkle img { width: 100%; height: 100%; display: block; }
+  .reward-asset__sparkle--right { right: -53.16px; transform: rotate(15deg); }
+  .reward-asset__sparkle--left  { left: -53px; transform: rotate(165deg) scaleY(-1); }
   .reward-asset__title {
     position: absolute;
     left: 50%;
@@ -601,18 +590,6 @@
   .reward-cta:active,
   .reward-cta.is-pressed { filter: brightness(0.94); }
 
-  /* opened-chest peeking behind the celebration content */
-  .reward-chest {
-    position: absolute;
-    left: 50%;
-    top: 252px;
-    transform: translateX(-50%);
-    width: 145px;
-    height: 179px;
-    z-index: -1;
-  }
-  .reward-chest img { width: 100%; height: 100%; display: block; }
-
   /* Respect reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -671,42 +648,24 @@
     <button class="btn-text"><span class="btn-text__label">Terms &amp; Conditions</span></button>
   </div>
 
-  <!-- reward modal: "Grand Prize" celebration (Figma node 1489:9029) -->
+  <!-- reward modal: "Grand Prize" celebration (Figma node 1901:15897) -->
   <div class="reward-modal" id="rewardModal" aria-hidden="true">
     <div class="reward-overlay"></div>
 
-    <div class="reward-chest">
-      <img src="https://www.figma.com/api/mcp/asset/11405a71-5b5b-40d6-bbdc-7a4026870409.svg" alt="" />
+    <div class="reward-crown" aria-hidden="true">
+      <img src="https://www.figma.com/api/mcp/asset/ae1ad64d-6cfc-4cbe-9378-2ec5eefceff9.png" alt="" />
     </div>
 
-    <div class="reward-gems" aria-hidden="true">
-      <div class="reward-gems__inner">
-        <span class="gem" style="top:63.33%; right:0; bottom:9.29%; left:92.99%;"><img src="https://www.figma.com/api/mcp/asset/0ca4987b-f23a-4bf5-9d8c-4d76acf8098c.svg" alt="" /></span>
-        <span class="gem" style="top:52.54%; right:4.72%; bottom:28.23%; left:85.99%;"><img src="https://www.figma.com/api/mcp/asset/d1a07273-8a01-4d91-a2f0-51442b9e679c.svg" alt="" /></span>
-        <span class="gem" style="top:71.77%; right:0; bottom:8.64%; left:87.69%;"><img src="https://www.figma.com/api/mcp/asset/b461bdea-6c58-470b-99f9-36fcf332e3fc.svg" alt="" /></span>
-        <span class="gem" style="top:52.82%; right:7.01%; bottom:8.64%; left:85.97%;"><img src="https://www.figma.com/api/mcp/asset/693dd26c-025f-4a8d-89cf-098c6a93478d.svg" alt="" /></span>
-        <span class="gem" style="top:52.24%; right:86.24%; bottom:27.58%; left:4.44%;"><img src="https://www.figma.com/api/mcp/asset/837a6db6-f47e-4e0f-bbf6-645adc3d082d.svg" alt="" /></span>
-        <span class="gem" style="top:64.14%; right:93.12%; bottom:7.39%; left:0;"><img src="https://www.figma.com/api/mcp/asset/489809ad-dfb9-4e92-bff7-7040e8e901f6.svg" alt="" /></span>
-        <span class="gem" style="top:52.24%; right:86.22%; bottom:8.35%; left:6.88%;"><img src="https://www.figma.com/api/mcp/asset/5ff25523-90f5-44b4-b80b-e2926dc41145.svg" alt="" /></span>
-        <span class="gem" style="top:72.42%; right:87.47%; bottom:7.33%; left:0;"><img src="https://www.figma.com/api/mcp/asset/13bce9e1-2b57-4fc6-930e-65108e05b22c.svg" alt="" /></span>
-        <span class="gem" style="top:56.3%; right:17.57%; bottom:4.06%; left:66.56%;"><img src="https://www.figma.com/api/mcp/asset/404e02a0-b83c-4995-a7ab-4af643b09a93.svg" alt="" /></span>
-        <span class="gem" style="top:58.39%; right:18.41%; bottom:6.15%; left:67.4%;"><img src="https://www.figma.com/api/mcp/asset/769d97b9-0722-4ef9-a43e-d2b65b18cf5c.svg" alt="" /></span>
-        <span class="gem" style="top:58.18%; right:67.84%; bottom:3.82%; left:16.02%;"><img src="https://www.figma.com/api/mcp/asset/bb6adafb-6d57-4dfc-be22-287a9e59077a.svg" alt="" /></span>
-        <span class="gem" style="top:60.18%; right:68.69%; bottom:5.83%; left:16.88%;"><img src="https://www.figma.com/api/mcp/asset/f955ffed-d96f-4444-9981-6c0b55efba07.svg" alt="" /></span>
-        <span class="gem" style="top:18.1%; right:14.65%; bottom:48.29%; left:74.71%;"><img src="https://www.figma.com/api/mcp/asset/44493752-4a00-4f41-ab15-5c76aef7b10c.svg" alt="" /></span>
-        <span class="gem" style="top:14.84%; right:74%; bottom:47.19%; left:13.99%;"><img src="https://www.figma.com/api/mcp/asset/bc3f4f01-053c-4214-9f7c-cc00ee13a488.svg" alt="" /></span>
-        <span class="gem" style="top:0; right:30.54%; bottom:0; left:28.47%;"><img src="https://www.figma.com/api/mcp/asset/41aa3594-ef29-46e7-87d0-b4322ed14902.svg" alt="" /></span>
-      </div>
-    </div>
-
-    <div class="reward-ribbon" aria-hidden="true">
-      <div class="reward-ribbon__shape">
-        <p class="reward-ribbon__text">You won a Grand Prize!</p>
-      </div>
-    </div>
+    <p class="reward-title">You won a Grand Prize!</p>
 
     <div class="reward-card" role="dialog" aria-label="Grand prize reward">
       <div class="reward-asset">
+        <span class="reward-asset__sparkle reward-asset__sparkle--right" aria-hidden="true">
+          <img src="https://www.figma.com/api/mcp/asset/13947f9a-fa54-494d-a2d0-6940dbc996e6.svg" alt="" />
+        </span>
+        <span class="reward-asset__sparkle reward-asset__sparkle--left" aria-hidden="true">
+          <img src="https://www.figma.com/api/mcp/asset/e7833e6e-b9e4-4739-a6e9-c9ea8922f7ba.svg" alt="" />
+        </span>
         <p class="reward-asset__title">
           <span>Traveloka Voucher</span>
           <span>Rp10.000.000</span>
