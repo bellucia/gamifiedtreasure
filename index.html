@@ -862,12 +862,12 @@
         var rewardTitle = document.querySelector('.reward-title');
         if (rewardTitle) rewardTitle.classList.add('is-revealed');
 
-        // Grand Prize Lottie runs 96 frames @ 24fps = exactly 4s.
-        // The voucher card slides up (receipt-style) right after it settles.
+        // The voucher card slides up (receipt-style) shortly after the
+        // Grand Prize animation starts.
         window.setTimeout(function () {
           var rewardCard = document.querySelector('.reward-card');
           if (rewardCard) rewardCard.classList.add('is-revealed');
-        }, 4000);
+        }, 1000);
       }, 700);
     });
   })();
