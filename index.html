@@ -24,7 +24,7 @@
     /* ---- color ---- */
     --color-bg-cream:              #f8f1e8;  /* page bg */
     --accent-primary:              #fdaf27;  /* accent/accent-primary — outline pill + T&C underline */
-    --accent-primary-on-color:     #1f1f1f;  /* accent/accent-primary-on-color — "Check Rewards Info" bg */
+    --accent-primary-on-color:     #1f1f1f;  /* accent/accent-primary-on-color — "See Available Rewards" bg */
     --accent-disabled:             #bfbfbf;  /* accent/accent-disabled */
     --button-primary-pressed-bg:   #fdcf7d;  /* button/button-primary-pressed-bg — outline pill pressed border */
     --button-neutral-text:         #ffffff;  /* button/button-neutral-text */
@@ -664,7 +664,7 @@
   <div class="info-panel">
     <p class="infobox">1 ticket = 1 chance. Use your ticket(s) before they expire on the 1st of next month!</p>
 
-    <button class="btn-main" id="mainCta">Check Rewards Info</button>
+    <button class="btn-main" id="mainCta">See Available Rewards</button>
 
     <button class="btn-text"><span class="btn-text__label">Terms &amp; Conditions</span></button>
   </div>
@@ -836,15 +836,13 @@
 
   // Chest tap interaction (matches Figma node 1355:10216 "Tap 1x"):
   // dialogue box fades out, chest crossfades from the idle (with hand)
-  // artwork to the tapped (hand removed) artwork, and the CTA button
-  // label swaps from "Check Rewards Info" to "See Remaining Rewards".
-  // After a short beat (letting the pop/burst animation play), the
-  // "Grand Prize" reward modal reveals (node 1489:9029).
+  // artwork to the tapped (hand removed) artwork. After a short beat
+  // (letting the pop/burst animation play), the "Grand Prize" reward
+  // modal reveals (node 1489:9029).
   (function () {
     var screen = document.querySelector('.screen');
     var stage = document.querySelector('.stage');
     var chestBtn = document.getElementById('chestTapTarget');
-    var mainCta = document.getElementById('mainCta');
     if (!screen || !stage || !chestBtn) return;
 
     chestBtn.addEventListener('click', function () {
@@ -852,7 +850,6 @@
       stage.classList.add('is-opened');
       chestBtn.disabled = true;
       chestBtn.setAttribute('aria-label', 'Treasure chest opened');
-      if (mainCta) mainCta.textContent = 'See Remaining Rewards';
       if (chestIdleAnim) chestIdleAnim.pause();
       if (chestTappedAnim) chestTappedAnim.goToAndPlay(0, true);
 
@@ -910,7 +907,6 @@
       overlay.addEventListener('click', function () {
         var stage = document.querySelector('.stage');
         var chestBtn = document.getElementById('chestTapTarget');
-        var mainCta = document.getElementById('mainCta');
         var rewardTitle = document.querySelector('.reward-title');
         var rewardCard = document.querySelector('.reward-card');
 
@@ -924,7 +920,6 @@
           chestBtn.disabled = false;
           chestBtn.setAttribute('aria-label', 'Tap the treasure chest to open it');
         }
-        if (mainCta) mainCta.textContent = 'Check Rewards Info';
 
         if (chestTappedAnim) chestTappedAnim.goToAndStop(0, true);
         if (grandPrizeAnim) grandPrizeAnim.goToAndStop(0, true);
