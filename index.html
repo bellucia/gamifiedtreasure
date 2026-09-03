@@ -438,6 +438,7 @@
     position: absolute;
     inset: 0;
     background: rgba(0,0,0,0.4); /* background/bg-transparent-dark-40 */
+    cursor: pointer;
   }
 
   /* crown + gem cluster: Grand Prize Lottie animation, edge-to-edge */
@@ -872,13 +873,14 @@
     });
   })();
 
-  // Reward modal: copy voucher code, dismiss via CTA.
+  // Reward modal: copy voucher code, dismiss via CTA, reset via overlay tap.
   (function () {
     var screen = document.querySelector('.screen');
     var copyBtn = document.getElementById('copyVoucherBtn');
     var copyLabel = document.getElementById('copyVoucherLabel');
     var rewardCta = document.getElementById('rewardCta');
     var rewardModal = document.getElementById('rewardModal');
+    var overlay = document.querySelector('.reward-overlay');
     var VOUCHER_CODE = 'JAGO-1234-ABCD';
 
     if (copyBtn) {
@@ -898,6 +900,34 @@
       rewardCta.addEventListener('click', function () {
         screen.classList.remove('show-reward');
         rewardModal.setAttribute('aria-hidden', 'true');
+      });
+    }
+
+    // Tapping the dark backdrop is a full reset — back to the original
+    // idle screen (dialogue box returns, chest re-shakes, CTA reverts).
+    if (overlay && screen && rewardModal) {
+      overlay.addEventListener('click', function () {
+        var stage = document.querySelector('.stage');
+        var chestBtn = document.getElementById('chestTapTarget');
+        var mainCta = document.getElementById('mainCta');
+        var rewardTitle = document.querySelector('.reward-title');
+        var rewardCard = document.querySelector('.reward-card');
+
+        screen.classList.remove('show-reward');
+        rewardModal.setAttribute('aria-hidden', 'true');
+        if (rewardTitle) rewardTitle.classList.remove('is-revealed');
+        if (rewardCard) rewardCard.classList.remove('is-revealed');
+
+        if (stage) stage.classList.remove('is-opened');
+        if (chestBtn) {
+          chestBtn.disabled = false;
+          chestBtn.setAttribute('aria-label', 'Tap the treasure chest to open it');
+        }
+        if (mainCta) mainCta.textContent = 'Check Rewards Info';
+
+        if (chestTappedAnim) chestTappedAnim.goToAndStop(0, true);
+        if (grandPrizeAnim) grandPrizeAnim.goToAndStop(0, true);
+        if (chestIdleAnim) chestIdleAnim.goToAndPlay(0, true);
       });
     }
   })();
