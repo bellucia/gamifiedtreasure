@@ -33,10 +33,21 @@
     --text-primary-inverse:        #ffffff;  /* text/text-primary-inverse */
     --text-on-color:               #1f1f1f;  /* text/text-on-color */
     --bg-success:                  #eaf6ea;  /* background/bg-success — tooltip + infobox */
+    --text-secondary:              #666666;  /* text/text-secondary */
+    --text-tertiary:               #828282;  /* text/text-tertiary */
+    --bg-dynamics:                 #f6e8f7;  /* background/bg-dynamics — "Unavailable Rewards" infobox */
+    --border-primary:              #e3e3e3;  /* border/border-primary — progress card border */
+    --accent-inactive:             #e3e3e3;  /* accent/accent-inactive — progress bar track */
+    --accent-success:              #4caf50;  /* accent/accent-success — progress bar fill */
+    --bg-info-neutral:             #e3e3e3;  /* background/bg-info-neutral — "No quota left" tag bg */
+    --accent-info-neutral:         #666666;  /* accent/accent-info-neutral — "No quota left" tag text */
+    --drawer-handler-bg:           #bfbfbf;  /* drawer/drawer-handler-bg */
+    --color-purple:                #a605ad;  /* Jago Purple — "Grand Reward" label, size badges */
 
     /* ---- radius ---- */
     --radius-button:               8px;
     --radius-xxl:                  32px;
+    --radius-card:                 12px;
 
     /* ---- spacing ---- */
     --space-6:                     6px;
@@ -58,8 +69,15 @@
     --font-size-title:       19px;
     --line-height-title:     22px;
 
+    --font-size-overline-2:   14px;
+    --line-height-overline-2: 16px;
+
+    --font-size-display-1:   22px;
+    --line-height-display-1: 24px;
+
     /* ---- effects ---- */
     --shadow-tooltip: 0 0 2px rgba(0,0,0,0.1);
+    --shadow-sm: 0 0 4px rgba(0,0,0,0.1);
   }
 
   * { box-sizing: border-box; }
@@ -611,6 +629,294 @@
   .reward-cta:active,
   .reward-cta.is-pressed { filter: brightness(0.94); }
 
+  /* =========================================================
+     REWARDS DRAWER — "Rewards Info" bottom sheet (Figma node 2025:7160)
+     Opens when the "See Available Rewards" CTA is tapped.
+     ========================================================= */
+  .rewards-drawer-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .rewards-drawer-layer.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .rewards-drawer-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    cursor: pointer;
+  }
+
+  .rewards-drawer {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateY(100%);
+    width: 100%;
+    max-width: 430px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--text-primary-inverse);
+    border-radius: 16px 16px 0 0;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .rewards-drawer-layer.is-open .rewards-drawer {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .rewards-drawer__handle {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 12px 0 4px;
+    flex: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .rewards-drawer__handle-bar {
+    width: 37px;
+    height: 4px;
+    border-radius: 100px;
+    background: var(--drawer-handler-bg);
+  }
+
+  .rewards-drawer__header {
+    flex: none;
+    padding: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .rewards-drawer__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--font-size-title);
+    line-height: var(--line-height-title);
+    color: var(--text-primary);
+  }
+  .rewards-drawer__subtitle {
+    margin: 0;
+    font-weight: 400;
+    font-size: var(--font-size-overline-2);
+    line-height: var(--line-height-overline-2);
+    color: var(--text-tertiary);
+  }
+
+  .rewards-drawer__body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* progress card */
+  .rewards-progress {
+    position: relative;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+  }
+  .rewards-progress__label {
+    margin: 0;
+    font-weight: 600;
+    font-size: var(--font-size-subhead-2);
+    line-height: var(--line-height-subhead-2);
+    color: var(--text-secondary);
+  }
+  .rewards-progress__amounts {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-wrap: wrap;
+  }
+  .rewards-progress__amount {
+    margin: 0;
+    font-weight: 600;
+    font-size: var(--font-size-display-1);
+    line-height: var(--line-height-display-1);
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+  .rewards-progress__amount-of {
+    margin: 0;
+    font-weight: 400;
+    font-size: var(--font-size-subhead-2);
+    line-height: var(--line-height-subhead-2);
+    color: var(--text-tertiary);
+  }
+  .rewards-progress__bar {
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--accent-inactive);
+    overflow: hidden;
+  }
+  .rewards-progress__bar-fill {
+    position: absolute;
+    inset: 0 16px 0 0;
+    background: var(--accent-success);
+    border-radius: 4px;
+  }
+  .rewards-progress__remaining {
+    margin: 0;
+    font-weight: 400;
+    font-size: var(--font-size-overline-2);
+    line-height: var(--line-height-overline-2);
+    color: var(--text-tertiary);
+  }
+  .rewards-progress__coins {
+    position: absolute;
+    right: -1px;
+    bottom: 53px;
+    width: 48px;
+    height: 70px;
+    pointer-events: none;
+  }
+  .rewards-progress__coins img { width: 100%; height: 100%; display: block; object-fit: contain; }
+
+  /* table header */
+  .rewards-table-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 400;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    color: var(--text-primary);
+  }
+
+  .rewards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* individual reward row card */
+  .reward-row {
+    display: flex;
+    align-items: stretch;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-tooltip);
+    overflow: hidden;
+  }
+  .reward-row__icon {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    padding: 16px 8px 16px 16px;
+    background: var(--text-primary-inverse);
+    border-right: 1px dashed var(--border-primary); /* evokes the ticket-tear divider */
+  }
+  .reward-row__icon img { width: 32px; height: 32px; display: block; }
+  .voucher-icon { position: relative; width: 32px; height: 32px; flex: none; }
+  .voucher-icon img { width: 100%; height: 100%; display: block; }
+  .voucher-icon__badge {
+    position: absolute;
+    left: 6.67px;
+    top: 6.67px;
+    width: 18.667px;
+    height: 18.667px;
+    border-radius: 4px;
+    background: var(--color-purple);
+    color: var(--text-primary-inverse);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .reward-row__body {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 12px 16px 12px 8px;
+    background: var(--text-primary-inverse);
+  }
+  .reward-row__text {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .reward-row__name {
+    margin: 0;
+    font-weight: 400;
+    font-size: var(--font-size-subhead-2);
+    line-height: var(--line-height-subhead-2);
+    color: var(--text-primary);
+  }
+  .reward-row__name strong {
+    font-weight: 600;
+    color: var(--color-purple);
+  }
+  .reward-row__claimed {
+    margin: 0;
+    font-weight: 400;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    color: var(--text-secondary);
+  }
+  .reward-row__quota {
+    flex: none;
+    margin: 0;
+    font-weight: 600;
+    font-size: var(--font-size-subhead-2);
+    line-height: var(--line-height-subhead-2);
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+  .reward-row__tag {
+    flex: none;
+    padding: 1px 8px;
+    border-radius: var(--radius-xxl);
+    background: var(--bg-info-neutral);
+    font-weight: 600;
+    font-size: var(--font-size-overline-2);
+    line-height: var(--line-height-overline-2);
+    color: var(--accent-info-neutral);
+    white-space: nowrap;
+  }
+  /* unavailable rows: dimmed name, no icon tint change (icons already neutral-colored assets) */
+  .reward-row--unavailable .reward-row__name,
+  .reward-row--unavailable .reward-row__quota { color: var(--text-tertiary); }
+
+  .rewards-divider {
+    height: 1px;
+    background: var(--border-primary);
+    flex: none;
+  }
+
+  .rewards-unavailable-note {
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: var(--radius-button);
+    background: var(--bg-dynamics);
+    font-weight: 400;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    color: var(--text-secondary);
+  }
+
   /* Respect reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -704,6 +1010,52 @@
       <p class="reward-caption">Open the Traveloka app to apply this voucher code.</p>
 
       <button class="reward-cta" id="rewardCta">Go to My Rewards</button>
+    </div>
+  </div>
+
+  <!-- rewards drawer: "Rewards Info" bottom sheet (Figma node 2025:7160) -->
+  <div class="rewards-drawer-layer" id="rewardsDrawerLayer" aria-hidden="true">
+    <div class="rewards-drawer-overlay" id="rewardsDrawerOverlay"></div>
+
+    <div class="rewards-drawer" role="dialog" aria-label="Rewards Info">
+      <button class="rewards-drawer__handle" id="rewardsDrawerHandle" aria-label="Close">
+        <span class="rewards-drawer__handle-bar"></span>
+      </button>
+
+      <div class="rewards-drawer__header">
+        <p class="rewards-drawer__title">Rewards Info</p>
+        <p class="rewards-drawer__subtitle">Updated today, 11:03</p>
+      </div>
+
+      <div class="rewards-drawer__body">
+        <div class="rewards-progress">
+          <p class="rewards-progress__label">Reward Available</p>
+          <div class="rewards-progress__amounts">
+            <p class="rewards-progress__amount">Rp107.000.000</p>
+            <p class="rewards-progress__amount-of">of Rp117.500.000</p>
+          </div>
+          <div class="rewards-progress__bar">
+            <div class="rewards-progress__bar-fill"></div>
+          </div>
+          <p class="rewards-progress__remaining">98% remaining</p>
+          <span class="rewards-progress__coins" aria-hidden="true">
+            <img src="https://www.figma.com/api/mcp/asset/f4a24db9-6074-4082-be00-d5dd16d9898d.svg" alt="" />
+          </span>
+        </div>
+
+        <div class="rewards-table-head">
+          <span>Reward Name</span>
+          <span>Quota</span>
+        </div>
+
+        <div class="rewards-list" id="rewardsListAvailable"></div>
+
+        <div class="rewards-divider"></div>
+
+        <p class="rewards-unavailable-note">Unavailable Rewards</p>
+
+        <div class="rewards-list" id="rewardsListUnavailable"></div>
+      </div>
     </div>
   </div>
 
@@ -926,6 +1278,78 @@
         if (chestIdleAnim) chestIdleAnim.goToAndPlay(0, true);
       });
     }
+  })();
+
+  // Rewards Info drawer (node 2025:7160) — opens from the main CTA.
+  (function () {
+    var CASHBACK_ICON = 'https://www.figma.com/api/mcp/asset/f4a24db9-6074-4082-be00-d5dd16d9898d.svg';
+    var VOUCHER_ICON = 'https://www.figma.com/api/mcp/asset/92974a22-28f9-4f79-b8b7-cf57c28c6cce.svg';
+
+    var availableRewards = [
+      { icon: 'cashback', name: '<strong>Grand Reward</strong> Traveloka Voucher Rp10.000.000', claimed: '0 claimed', quota: '1 left' },
+      { icon: 'voucher',  name: 'Traveloka Voucher Rp500.000',  claimed: '20 claimed', quota: '5 left' },
+      { icon: 'voucher',  name: 'Traveloka Voucher Rp100.000',  claimed: '5 claimed',  quota: '95 left' },
+      { icon: 'cashback', name: 'Cashback Rp50.000',            claimed: '0 claimed',  quota: '500 left' },
+      { icon: 'cashback', name: 'Cashback Rp2.000',             claimed: '0 claimed',  quota: '2.000 left' },
+      { icon: 'cashback', name: 'Cashback Rp1.000',             claimed: '0 claimed',  quota: '10.000 left' }
+    ];
+
+    var unavailableRewards = [
+      { icon: 'cashback', name: 'Traveloka Voucher Rp1.000.000', claimed: '1 claimed' },
+      { icon: 'voucher',  name: 'Cashback Rp20.000',             claimed: '100 claimed' }
+    ];
+
+    function iconMarkup(type) {
+      if (type === 'voucher') {
+        return '<span class="voucher-icon"><img src="' + VOUCHER_ICON + '" alt="" /><span class="voucher-icon__badge">32</span></span>';
+      }
+      return '<img src="' + CASHBACK_ICON + '" alt="" />';
+    }
+
+    function renderRow(item, unavailable) {
+      var row = document.createElement('div');
+      row.className = 'reward-row' + (unavailable ? ' reward-row--unavailable' : '');
+      var quotaMarkup = unavailable
+        ? '<span class="reward-row__tag">No quota left</span>'
+        : '<p class="reward-row__quota">' + item.quota + '</p>';
+      row.innerHTML =
+        '<span class="reward-row__icon">' + iconMarkup(item.icon) + '</span>' +
+        '<span class="reward-row__body">' +
+          '<span class="reward-row__text">' +
+            '<p class="reward-row__name">' + item.name + '</p>' +
+            '<p class="reward-row__claimed">' + item.claimed + '</p>' +
+          '</span>' +
+          quotaMarkup +
+        '</span>';
+      return row;
+    }
+
+    var availableList = document.getElementById('rewardsListAvailable');
+    var unavailableList = document.getElementById('rewardsListUnavailable');
+    if (availableList) availableRewards.forEach(function (item) { availableList.appendChild(renderRow(item, false)); });
+    if (unavailableList) unavailableRewards.forEach(function (item) { unavailableList.appendChild(renderRow(item, true)); });
+
+    var mainCta = document.getElementById('mainCta');
+    var drawerLayer = document.getElementById('rewardsDrawerLayer');
+    var drawerOverlay = document.getElementById('rewardsDrawerOverlay');
+    var drawerHandle = document.getElementById('rewardsDrawerHandle');
+
+    function openDrawer() {
+      if (drawerLayer) {
+        drawerLayer.classList.add('is-open');
+        drawerLayer.setAttribute('aria-hidden', 'false');
+      }
+    }
+    function closeDrawer() {
+      if (drawerLayer) {
+        drawerLayer.classList.remove('is-open');
+        drawerLayer.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    if (mainCta) mainCta.addEventListener('click', openDrawer);
+    if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+    if (drawerHandle) drawerHandle.addEventListener('click', closeDrawer);
   })();
 </script>
 
