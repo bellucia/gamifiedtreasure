@@ -43,6 +43,10 @@
     --accent-info-neutral:         #666666;  /* accent/accent-info-neutral — "No quota left" tag text */
     --drawer-handler-bg:           #bfbfbf;  /* drawer/drawer-handler-bg */
     --color-purple:                #a605ad;  /* Jago Purple — "Grand Reward" label, size badges */
+    --bg-screen-secondary:         #f9f9f9;  /* background-screen/bg-screen-secondary — My Rewards page bg */
+    --text-on-color-secondary:     rgba(0,0,0,0.6); /* text/text-on-color-secondary */
+    --bg-primary-inverse:          #1f1f1f;  /* background/bg-primary-inverse — active chip */
+    --bg-secondary:                #efefef;  /* background/bg-secondary — inactive chip */
 
     /* ---- radius ---- */
     --radius-button:               8px;
@@ -917,6 +921,172 @@
     color: var(--text-secondary);
   }
 
+  /* =========================================================
+     MY REWARDS SCREEN — full-screen page (Figma node 2025:7527)
+     Opens from "My Rewards" (header pill) or "Go to My Rewards"
+     (reward-card CTA). Slides in from the right, like a push nav.
+     ========================================================= */
+  .my-rewards-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    background: var(--bg-screen-secondary);
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .my-rewards-screen.is-open { transform: translateX(0); }
+
+  .my-rewards-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 13px 16px;
+    padding-top: max(13px + 44px, calc(13px + env(safe-area-inset-top, 44px)));
+  }
+  .my-rewards-back {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .my-rewards-back svg { width: 100%; height: 100%; }
+  .my-rewards-title {
+    margin: 0;
+    flex: 1 1 auto;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--font-size-title);
+    line-height: var(--line-height-title);
+    color: var(--text-primary);
+  }
+
+  .my-rewards-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 32px;
+  }
+
+  .my-rewards-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0 16px;
+  }
+  .my-rewards-balance {
+    width: 100%;
+    background: var(--bg-dynamics);
+    border-radius: 10px;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .my-rewards-balance__amount {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    color: var(--color-purple);
+  }
+  .my-rewards-balance__label {
+    margin: 0;
+    font-weight: 400;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    color: var(--text-on-color-secondary);
+  }
+  .my-rewards-note {
+    margin: 0;
+    width: 100%;
+    font-weight: 400;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    color: var(--text-secondary);
+  }
+
+  .my-rewards-list-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .my-rewards-chips {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px;
+    overflow-x: auto;
+  }
+  .chip {
+    flex: none;
+    padding: 7px 14px;
+    border-radius: 18px;
+    border: none;
+    background: var(--bg-secondary);
+    color: var(--text-tertiary);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .chip.is-active {
+    background: var(--bg-primary-inverse);
+    color: var(--text-primary-inverse);
+  }
+
+  .my-rewards-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 16px;
+  }
+
+  .voucher-row__link {
+    flex: none;
+    appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-caption);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--accent-primary);
+  }
+
+  .my-rewards-empty {
+    margin: 0;
+    padding: 32px 16px;
+    text-align: center;
+    font-weight: 400;
+    font-size: var(--font-size-subhead);
+    line-height: var(--line-height-subhead);
+    color: var(--text-tertiary);
+  }
+
   /* Respect reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -938,7 +1108,7 @@
       <button class="icon-btn" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
-      <button class="btn-pill-outline">My Rewards</button>
+      <button class="btn-pill-outline" id="myRewardsPillBtn">My Rewards</button>
     </div>
   </header>
 
@@ -1055,6 +1225,35 @@
         <p class="rewards-unavailable-note">Unavailable Rewards</p>
 
         <div class="rewards-list" id="rewardsListUnavailable"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Rewards screen: full-screen page (Figma node 2025:7527) -->
+  <div class="my-rewards-screen" id="myRewardsScreen" aria-hidden="true">
+    <div class="my-rewards-header">
+      <button class="my-rewards-back" id="myRewardsBack" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="my-rewards-title">My Rewards</p>
+    </div>
+
+    <div class="my-rewards-body">
+      <div class="my-rewards-intro">
+        <div class="my-rewards-balance">
+          <p class="my-rewards-balance__amount">Rp2.040.000</p>
+          <p class="my-rewards-balance__label">All-Time Rewards</p>
+        </div>
+        <p class="my-rewards-note">Some rewards take a few days to process. Check this page and your notifications regularly for updates.</p>
+      </div>
+
+      <div class="my-rewards-list-wrap">
+        <div class="my-rewards-chips">
+          <button class="chip is-active" id="chipVoucher">Voucher</button>
+          <button class="chip" id="chipCashback">Cashback</button>
+        </div>
+
+        <div class="my-rewards-rows" id="myRewardsRows"></div>
       </div>
     </div>
   </div>
@@ -1250,6 +1449,7 @@
       rewardCta.addEventListener('click', function () {
         screen.classList.remove('show-reward');
         rewardModal.setAttribute('aria-hidden', 'true');
+        openMyRewardsScreen();
       });
     }
 
@@ -1350,6 +1550,90 @@
     if (mainCta) mainCta.addEventListener('click', openDrawer);
     if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
     if (drawerHandle) drawerHandle.addEventListener('click', closeDrawer);
+  })();
+
+  // My Rewards screen (node 2025:7527) — top-level function declaration so
+  // it's available (via hoisting) to the reward-modal CTA handler above,
+  // even though it's wired up in this later block.
+  function openMyRewardsScreen() {
+    var screen = document.getElementById('myRewardsScreen');
+    if (screen) {
+      screen.classList.add('is-open');
+      screen.setAttribute('aria-hidden', 'false');
+    }
+  }
+  function closeMyRewardsScreen() {
+    var screen = document.getElementById('myRewardsScreen');
+    if (screen) {
+      screen.classList.remove('is-open');
+      screen.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  (function () {
+    var CASHBACK_ICON = 'https://www.figma.com/api/mcp/asset/4da40a2d-e9b8-462d-9605-cf822ffa2cb0.svg';
+    var VOUCHER_ICON = 'https://www.figma.com/api/mcp/asset/a1300b9a-8237-4947-9fcd-29d6d68e7bd9.svg';
+
+    var vouchers = [
+      { icon: 'cashback', name: 'Traveloka Voucher 10.000.000', expiry: 'Expires on 30 Jul 2026' },
+      { icon: 'voucher',  name: 'Traveloka Voucher 1.000.000',  expiry: 'Expires on 30 Jul 2026' }
+    ];
+
+    function iconMarkup(type) {
+      if (type === 'voucher') {
+        return '<span class="voucher-icon"><img src="' + VOUCHER_ICON + '" alt="" /><span class="voucher-icon__badge">32</span></span>';
+      }
+      return '<img src="' + CASHBACK_ICON + '" alt="" />';
+    }
+
+    function renderVoucherRow(item) {
+      var row = document.createElement('div');
+      row.className = 'reward-row';
+      row.innerHTML =
+        '<span class="reward-row__icon">' + iconMarkup(item.icon) + '</span>' +
+        '<span class="reward-row__body">' +
+          '<span class="reward-row__text">' +
+            '<p class="reward-row__name">' + item.name + '</p>' +
+            '<p class="reward-row__claimed">' + item.expiry + '</p>' +
+          '</span>' +
+          '<button class="voucher-row__link" type="button">See Details</button>' +
+        '</span>';
+      return row;
+    }
+
+    var rowsContainer = document.getElementById('myRewardsRows');
+    var chipVoucher = document.getElementById('chipVoucher');
+    var chipCashback = document.getElementById('chipCashback');
+
+    function showVouchers() {
+      if (!rowsContainer) return;
+      rowsContainer.innerHTML = '';
+      vouchers.forEach(function (item) { rowsContainer.appendChild(renderVoucherRow(item)); });
+    }
+    function showCashbackEmpty() {
+      if (!rowsContainer) return;
+      rowsContainer.innerHTML = '<p class="my-rewards-empty">No cashback rewards yet.</p>';
+    }
+
+    showVouchers(); // initial tab: Voucher (active by default, matches design)
+
+    if (chipVoucher && chipCashback) {
+      chipVoucher.addEventListener('click', function () {
+        chipVoucher.classList.add('is-active');
+        chipCashback.classList.remove('is-active');
+        showVouchers();
+      });
+      chipCashback.addEventListener('click', function () {
+        chipCashback.classList.add('is-active');
+        chipVoucher.classList.remove('is-active');
+        showCashbackEmpty();
+      });
+    }
+
+    var pillBtn = document.getElementById('myRewardsPillBtn');
+    var backBtn = document.getElementById('myRewardsBack');
+    if (pillBtn) pillBtn.addEventListener('click', openMyRewardsScreen);
+    if (backBtn) backBtn.addEventListener('click', closeMyRewardsScreen);
   })();
 </script>
 
