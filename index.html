@@ -1457,25 +1457,9 @@
     // idle screen (dialogue box returns, chest re-shakes, CTA reverts).
     if (overlay && screen && rewardModal) {
       overlay.addEventListener('click', function () {
-        var stage = document.querySelector('.stage');
-        var chestBtn = document.getElementById('chestTapTarget');
-        var rewardTitle = document.querySelector('.reward-title');
-        var rewardCard = document.querySelector('.reward-card');
-
         screen.classList.remove('show-reward');
         rewardModal.setAttribute('aria-hidden', 'true');
-        if (rewardTitle) rewardTitle.classList.remove('is-revealed');
-        if (rewardCard) rewardCard.classList.remove('is-revealed');
-
-        if (stage) stage.classList.remove('is-opened');
-        if (chestBtn) {
-          chestBtn.disabled = false;
-          chestBtn.setAttribute('aria-label', 'Tap the treasure chest to open it');
-        }
-
-        if (chestTappedAnim) chestTappedAnim.goToAndStop(0, true);
-        if (grandPrizeAnim) grandPrizeAnim.goToAndStop(0, true);
-        if (chestIdleAnim) chestIdleAnim.goToAndPlay(0, true);
+        resetSceneToIdle();
       });
     }
   })();
@@ -1552,6 +1536,29 @@
     if (drawerHandle) drawerHandle.addEventListener('click', closeDrawer);
   })();
 
+  // Full reset back to the original idle screen: dialogue box returns,
+  // chest re-shakes, Grand Prize/tapped animations rewind. Shared by the
+  // reward-modal overlay dismiss and the My Rewards back button.
+  function resetSceneToIdle() {
+    var stage = document.querySelector('.stage');
+    var chestBtn = document.getElementById('chestTapTarget');
+    var rewardTitle = document.querySelector('.reward-title');
+    var rewardCard = document.querySelector('.reward-card');
+
+    if (rewardTitle) rewardTitle.classList.remove('is-revealed');
+    if (rewardCard) rewardCard.classList.remove('is-revealed');
+
+    if (stage) stage.classList.remove('is-opened');
+    if (chestBtn) {
+      chestBtn.disabled = false;
+      chestBtn.setAttribute('aria-label', 'Tap the treasure chest to open it');
+    }
+
+    if (chestTappedAnim) chestTappedAnim.goToAndStop(0, true);
+    if (grandPrizeAnim) grandPrizeAnim.goToAndStop(0, true);
+    if (chestIdleAnim) chestIdleAnim.goToAndPlay(0, true);
+  }
+
   // My Rewards screen (node 2025:7527) — top-level function declaration so
   // it's available (via hoisting) to the reward-modal CTA handler above,
   // even though it's wired up in this later block.
@@ -1568,6 +1575,7 @@
       screen.classList.remove('is-open');
       screen.setAttribute('aria-hidden', 'true');
     }
+    resetSceneToIdle();
   }
 
   (function () {
